@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
@@ -15,10 +15,10 @@ export class LoginComponent implements OnInit {
 
   loginForm: UntypedFormGroup;
   // After first submission attempt, form validation will start
-  submitted = false;
+  submitted = signal(false);
   // Error flag
-  error = false;
-  errorMessage = '';
+  error = signal(false);
+  errorMessage = signal('');
 
   constructor(private formBuilder: UntypedFormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.formBuilder.group({
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
    * Form validation will start after the method is called, additionally an AuthRequest will be sent
    */
   loginUser() {
-    this.submitted = true;
+    this.submitted.set(true);
     if (this.loginForm.valid) {
       const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
       this.authenticateUser(authRequest);
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
       error: error => {
         console.log('Could not log in due to:');
         console.log(error);
-        this.error = true;
+        this.error.set(true);
         if (typeof error.error === 'object') {
           this.errorMessage = error.error.error;
         } else {
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
    * Error flag will be deactivated, which clears the error message
    */
   vanishError() {
-    this.error = false;
+    this.error.set(false);
   }
 
   ngOnInit() {

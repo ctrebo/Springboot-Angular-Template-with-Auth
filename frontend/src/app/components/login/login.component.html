@@ -1,6 +1,6 @@
-@if (error) {
+@if (error()) {
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Authentication problems!</strong> {{ errorMessage }}
+  <strong>Authentication problems!</strong> {{ errorMessage() }}
   <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -25,7 +25,7 @@
               <label for="inputUsername">Username</label>
               <input type="text" name="username" formControlName="username" class="form-control" id="inputUsername"
                      aria-describedby="usernameHelp" placeholder="Enter username">
-              @if (submitted && loginForm.controls.username.errors) {
+              @if (submitted() && loginForm.controls.username.errors) {
               <div class="error">
                 @if (loginForm.controls.username.errors.required) {
                 <small class="form-text text-warning">Your username is
@@ -40,7 +40,7 @@
               <label for="password">Password</label>
               <input type="password" name="password" formControlName="password" class="form-control" id="password"
                      placeholder="Password">
-              @if (submitted && loginForm.controls.password.errors) {
+              @if (submitted() && loginForm.controls.password.errors) {
               <div class="error">
                 @if (loginForm.controls.password.errors.required) {
                 <small class="form-text text-warning">Your password
@@ -49,7 +49,7 @@
                 </small>
                 }
 
-                @if (submitted && loginForm.controls.password.errors.minlength) {
+                @if (submitted() && loginForm.controls.password.errors.minlength) {
                 <small class="form-text text-warning" >Your password
                   must be at least 8 characters long!
                 </small>
